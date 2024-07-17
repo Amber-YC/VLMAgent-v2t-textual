@@ -32,7 +32,9 @@ def fetch_text(urls):
             filepath = os.path.join(output_dir, filename)
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(html_content)
-            plain_text = extract_plain_text(html_content, main_content=True)
+            plain_text = extract_plain_text(html_content, main_content=False, links=False, skip_elements=['li'], noscript=True) # may ignore key text if main_content=True
+            # plain_text = extract_plain_text(html_content, main_content=True)
+            print(plain_text)
             text_data.append({
                 'url': url,
                 'html_filename': filename,
