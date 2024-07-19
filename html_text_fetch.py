@@ -19,7 +19,7 @@ def fetch_html(url):
         return None
 
 
-def fetch_text(urls):
+def fetch_text(urls, output_dir, jsonl_file):
     text_data = []
     for url in urls:
         html_content = fetch_html(url)
@@ -40,7 +40,6 @@ def fetch_text(urls):
                 'html_filename': filename,
                 'plain_text': plain_text
             })
-            jsonl_file = 'text_set.jsonl'
             with jsonlines.open(jsonl_file, 'w') as writer:
                 writer.write_all(text_data)
             # print(f"HTML content from {url} saved to {filepath}")
@@ -49,11 +48,17 @@ def fetch_text(urls):
 
 
 if __name__ == "__main__":
-    urls = ["https://support.apple.com/en-gb/guide/mac-help/mchl834d18c2/14.0/mac/14.0",
+    pos_urls = ["https://support.apple.com/en-gb/guide/mac-help/mchl834d18c2/14.0/mac/14.0",
             "https://support.microsoft.com/en-gb/windows/find-and-open-file-explorer-ef370130-1cca-9dc5-e0df-2f7416fe1cb1"]
     # Directory to save HTML files
-    output_dir = "html_files"
-    os.makedirs(output_dir, exist_ok=True)
-    fetch_text(urls)
+    pos_output_dir = "pos_html_files"
+    os.makedirs(pos_output_dir, exist_ok=True)
+    fetch_text(pos_urls, pos_output_dir, "pos_texts.jsonl")
+
+    neg_urls = ["https://www.youtube.com"]
+    # Directory to save HTML files
+    neg_output_dir = "neg_html_files"
+    os.makedirs(neg_output_dir, exist_ok=True)
+    fetch_text(neg_urls, neg_output_dir, "neg_texts.jsonl")
 
     print("HTML fetching and text saving completed.")
